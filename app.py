@@ -22,7 +22,8 @@ credentials = {
 }
 
 authenticator = stauth.Authenticate(credentials, "quote_dashboard", "auth_token", cookie_expiry_days=1)
-name, auth_status, username = authenticator.login("Login", location="sidebar")
+name, auth_status = authenticator.login("Login", location="sidebar")
+username = name.lower().replace(" ", "") if name else "guest"
 
 if auth_status is False:
     st.error("Invalid username or password")
