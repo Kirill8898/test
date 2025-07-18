@@ -7,19 +7,20 @@ import os
 import streamlit_authenticator as stauth
 
 # ---------------------------- CONFIGURATION ----------------------------
-# Dummy credentials (replace with secure DB or encrypted file in production)
-users = {
-    "client1": {"name": "Client One", "password": "pass123"},
-    "client2": {"name": "Client Two", "password": "test456"}
-}
-
-# Setup authentication
+# Pre-hashed credentials (generated with stauth.Hasher)
 credentials = {
     "usernames": {
-        u: {"name": v["name"], "password": stauth.Hasher([v["password"]]).generate()[0]}
-        for u, v in users.items()
+        "client1": {
+            "name": "Client One",
+            "password": "$2b$12$KIXQZtEQo03FnQj6DeZPluFLrGrR/FgxZPMiZPXYu3YyLg17LzAva"  # 'pass123'
+        },
+        "client2": {
+            "name": "Client Two",
+            "password": "$2b$12$kKH0iM5zBCxgTRG8tckZ/OFsGVPk6sTnGV/3e0vL3T1BtG7tJX92u"  # 'test456'
+        }
     }
 }
+
 authenticator = stauth.Authenticate(credentials, "quote_dashboard", "auth_token", cookie_expiry_days=1)
 name, auth_status, username = authenticator.login("Login", "main")
 
