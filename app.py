@@ -22,8 +22,12 @@ credentials = {
 }
 
 authenticator = stauth.Authenticate(credentials, "quote_dashboard", "auth_token", cookie_expiry_days=1)
-name, auth_status = authenticator.login("Login", location="sidebar")
-username = name.lower().replace(" ", "")
+login_result = authenticator.login("Login", location="sidebar")
+if isinstance(login_result, tuple) and len(login_result) == 2:
+    name, auth_status = login_result
+    username = name.lower().replace(" ", "") if name else "unknown"
+else:
+    st.stop()
 
 if auth_status is False:
     st.error("Invalid username or password")
@@ -164,3 +168,4 @@ if auth_status:
             del st.session_state.edit_id
             st.success("✅ Changes saved successfully!")
             st.experimental_rerun()
+
